@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Store - Premium Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f0d060;
+            --gold-dark: #b8860b;
+            --bg: #080808;
+            --bg2: #0f0f0f;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Raleway', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Gold shimmer lines */
+        .shimmer-line {
+            position: fixed;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            opacity: 0.05;
+            animation: shimmerMove 8s ease-in-out infinite;
+        }
+        .shimmer-line:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .shimmer-line:nth-child(2) { left: 50%; animation-delay: 3s; }
+        .shimmer-line:nth-child(3) { left: 80%; animation-delay: 6s; }
+        @keyframes shimmerMove {
+            0%, 100% { opacity: 0.03; }
+            50% { opacity: 0.08; }
+        }
+
+        /* Radial glow behind logo */
+        .glow-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 420px;
+            width: 92%;
+            padding: 40px 20px 50px;
+            animation: fadeInUp 1s ease both;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tagline */
+        .tagline {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        /* Logo */
+        .logo-wrap {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 40px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        .logo-ring {
+            position: absolute;
+            inset: -12px;
+            border-radius: 50%;
+            border: 1px solid rgba(212,175,55,0.3);
+            animation: rotateSlow 12s linear infinite;
+        }
+        .logo-ring::before {
+            content: '';
+            position: absolute;
+            top: -3px; left: 50%;
+            width: 6px; height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 8px var(--gold);
+        }
+        .logo-ring-2 {
+            position: absolute;
+            inset: -22px;
+            border-radius: 50%;
+            border: 1px solid rgba(212,175,55,0.1);
+            animation: rotateSlow 20s linear infinite reverse;
+        }
+        @keyframes rotateSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 38px;
+            box-shadow:
+                0 0 0 1px rgba(212,175,55,0.3),
+                0 10px 40px rgba(212,175,55,0.25),
+                0 0 80px rgba(212,175,55,0.1);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 0 0 1px rgba(212,175,55,0.3), 0 10px 40px rgba(212,175,55,0.25), 0 0 80px rgba(212,175,55,0.1); }
+            50% { box-shadow: 0 0 0 1px rgba(212,175,55,0.5), 0 10px 60px rgba(212,175,55,0.4), 0 0 120px rgba(212,175,55,0.2); }
+        }
+
+        /* Title */
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 42px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+        .title span {
+            color: var(--gold);
+            font-weight: 900;
+        }
+
+        /* Stars */
+        .stars {
+            color: var(--gold);
+            font-size: 13px;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.7s both;
+        }
+
+        .subtext {
+            color: #666;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 45px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        /* Download Button */
+        .btn-wrap {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 1s both;
+            margin-bottom: 20px;
+        }
+        .download-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #e5c060, #b8860b, #e5c060);
+            background-size: 200% 100%;
+            color: #000;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 15px;
+            letter-spacing: 2px;
+            box-shadow:
+                0 5px 30px rgba(212,175,55,0.4),
+                0 0 60px rgba(212,175,55,0.1);
+            animation: btnShimmer 3s linear infinite, btnFloat 3s ease-in-out infinite;
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+        }
+        @keyframes btnShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        @keyframes btnFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: sweep 2.5s ease infinite;
+        }
+        @keyframes sweep {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+        .download-btn:active {
+            transform: scale(0.97) !important;
+        }
+        .btn-icon {
+            font-size: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        /* Ripple on click */
+        .download-btn .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            transform: scale(0);
+            animation: rippleAnim 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes rippleAnim {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* Info */
+        .info {
+            color: #444;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 1.1s both;
+            margin-bottom: 50px;
+        }
+
+        /* Steps */
+        .steps {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(212,175,55,0.1);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: left;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 1.2s both;
+        }
+        .steps-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease both;
+        }
+        .step:nth-child(2) { animation-delay: 1.3s; }
+        .step:nth-child(3) { animation-delay: 1.4s; }
+        .step:nth-child(4) { animation-delay: 1.5s; }
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #000;
+            font-weight: 700;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-family: 'Cinzel', serif;
+        }
+        .step-text {
+            color: #888;
+            font-size: 13px;
+            line-height: 1.5;
+            padding-top: 5px;
+        }
+        .step-text strong {
+            color: #ccc;
+        }
+
+        /* Bottom bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            opacity: 0.3;
+        }
+
+        /* Corner decorations */
+        .corner {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            opacity: 0.2;
+        }
+        .corner-tl { top: 20px; left: 20px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+        .corner-tr { top: 20px; right: 20px; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+        .corner-bl { bottom: 20px; left: 20px; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+        .corner-br { bottom: 20px; right: 20px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+    </style>
+</head>
+<body>
+
+    <!-- Background effects -->
+    <div class="particles" id="particles"></div>
+    <div class="shimmer-line"></div>
+    <div class="shimmer-line"></div>
+    <div class="shimmer-line"></div>
+    <div class="glow-bg"></div>
+
+    <!-- Corner decorations -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="container">
+        <div class="tagline">• UNTOLD • PREMIUM EDITION •</div>
+
+        <div class="logo-wrap">
+            <div class="logo-ring-2"></div>
+            <div class="logo-ring"></div>
+            <img src="logo.png" alt="Elite Store Logo" class="logo-img">
+        </div>
+
+        <div class="stars">★ ★ ★ ★ ★</div>
+        <h1 class="title">Elite <span>Store</span></h1>
+        <div class="subtext">Tap · Install · Shop</div>
+
+        <div class="btn-wrap">
+            <a href="EliteStore.apk" download class="download-btn" id="dlBtn">
+                <span class="btn-icon">⬇</span>
+                DOWNLOAD APK
+            </a>
+        </div>
+
+        <div class="info">Android 6.0+ &nbsp;·&nbsp; ~5 MB &nbsp;·&nbsp; Free</div>
+
+        <div class="steps">
+            <div class="steps-title">Install in 3 Steps</div>
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-text">Tap <strong>Download APK</strong> above. File will save to your phone.</div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-text">Open <strong>EliteStore.apk</strong>. If prompted, allow <strong>"Install unknown apps"</strong>.</div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-text">Open app, <strong>Login or Register</strong> and enjoy Premium! 👑</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-bar"></div>
+
+    <script>
+        // Generate floating particles
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+            p.style.animationDuration = (Math.random() * 10 + 8) + 's';
+            p.style.animationDelay = (Math.random() * 10) + 's';
+            container.appendChild(p);
+        }
+
+        // Ripple effect on download button
+        document.getElementById('dlBtn').addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 700);
+        });
+    </script>
+</body>
+</html>
